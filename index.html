@@ -1,0 +1,336 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>An Introduction to Pandas</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <!-- <link rel="stylesheet" href="css/theme/black.css"> -->
+    <link rel="stylesheet" href="css/theme/league.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+	<section>
+	  <section data-background-image="./city_skyline.jpg">
+	    <h3>Institutional Ownership and ROA</h3>
+	    <br>
+	    <h4>An Introduction to Pandas</h4>
+	    <br>
+	    <br>
+	    <br>
+	    <br>
+	    <br>
+	  </section>
+	  <section>
+	    <h2>An Introduction to Pandas</h2>
+	    <br>
+	    <p> MATT BRIGIDA </p>
+	    <p> Associate Professor of Finance (SUNY Polytechnic Institute) & Financial Education Advisor, Milken Institute Center for Financial Markets</p>
+	  </section>
+	</section>
+
+	<section>
+	  <h3>Institutional Ownership and ROA</h3>
+	  <!-- <p align="left">Imagine you arrive at work on a Monday morning and your boss asks you whether higher levels of institutional ownership affects how well a firm is managed.  Theory would prompt you to answer 'yes', however you'll want some data to back up your answer.  In this session we'll gather some relevant data and provide a <b>preliminary</b> answer.</p> -->
+	</section>
+
+	<section>
+	  <h3><a href="https://pandas.pydata.org/">Pandas</a></h3>
+	  <p align="left">The Pandas library provides us with the table-like data structure which is ubiquitous in finance---the <code>DataFrame</code>.</p>
+	  <ul>
+	    <li>Pandas was created by the investment management firm <a href="https://www.aqr.com/">AQR Capital Management</a>.</li>
+	    <li>It is now open-source (supported by <a href="https://numfocus.org/sponsored-projects">Numfocus</a>) and developed and managed by a global community.</li>
+	  </ul>
+	</section>
+
+	<section>
+	  <h3>Overview of Presentation</h3>
+	  <p align="left">In this presentation we'll cover getting started with Pandas.  Specifically, we'll import an Excel spreadsheet and cover common tasks related to: </p>
+	  <ul>
+	    <li>data quality</li>
+	    <li>basic operations on the DataFrame</li>
+	    <li>and merging data</li>
+	  </ul>
+	</section>
+
+	<section>
+	  <h3>Data Import</h3>
+	  <p align="left">Pandas allows us to <a href="https://pandas.pydata.org/docs/user_guide/io.html">read data from common file types</a>, such as Excel, CSV, and JSON.</p>
+	  <p align="left">Pandas also allows you to import remote files (over https for example), in addition to reading local files.</p>
+	  <pre><code>
+ >>> pandas.read_excel("https://some-website/spreadsheet.xlsx")   # import an excel spreadsheet from a (fictional) remote URL
+	  </code></pre>
+	</section>
+
+	<section>
+	  <h3>Inspecting Data</h3>
+	  <p align="left">After importing data it is important to ensure it was imported properly.  By this we mean, numbers were imported as numbers and strings as strings, column names match the columns, etc.  We may also want to check the dimensions of the data.  Pandas DataFrame objects have a number of <i>attributes</i> for this:</p>
+	  <pre><code>
+ >>> DataFrame.columns   # show column names         
+	  </code></pre>
+	  <pre><code>
+ >>> DataFrame.dtype    # Show the type of each column
+	  </code></pre>
+	</section>
+
+	<section>
+	  <p align="left">Of course, viewing and sorting the data is also useful:</p>
+	  <pre><code>
+ >>> DataFrame.head(n)   # show first n rows of the DataFrame	     
+	  </code></pre>
+	  <pre><code>
+ >>> DataFrame.sort_values("column_name")   # sort the DataFrame by column "column_name"
+	  </code></pre>
+	</section>
+
+	<section>
+	  <h3>Selecting Columns</h3>
+	  <p align="left">We can select a column from the DataFrame with:</p>
+	  <pre><code data-trim data-noescape>
+ >>> DataFrame["column1"]  # select the column named 'column1'
+	  </code></pre>
+	  <p align="left">If we want to select multiple columns we can use a list:</p>
+	  <pre><code data-trim data-noescape>
+ >>> DataFrame[["column1", "column2"]]  # select the columns named 'column1' and 'column2'
+	  </code></pre>	  
+	</section>
+
+	<section>
+	  <h3>Python Lists</h3>
+	  <p align="left">A list is a specific data type in Python which is an ordered collection of elements:</p>
+	  <pre><code data-trim data-noescape>
+ >>> a_list = ["finance", "economics", "accounting"]
+	    </code>
+	  </pre>
+	  <p align="left">We can access members of a list with:</p>
+	  <pre><code data-trim data-noescape>
+	      >>> a_list[1]  # returns "economics", note indexing starts at 0
+	    </code>
+	  </pre>
+	  <p align="left">This should help you understand the notation we used to select columns from our DataFrame</p>
+	</section>
+
+	<section>
+	  <h3>Dropping Columns</h3>
+	  <p align="left">We can <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop.html">drop columns from a DataFrame</a> with:</p>
+	  <pre><code data-trim data-noescape>
+ >>> DataFrame.drop(labels="column_name", inplace=True)   # drop 'column_name' from the DataFrame.
+	    </code>
+	  </pre>
+	</section>
+
+	<section>
+	  <h3>Adding Columns</h3>
+	  <p align="left">We can a column simply by naming it and assigning a value:</p>
+	  <pre><code data-trim data-noescape>
+ >>> DataFrame["new_column"] = 3   # creates a new column which has 3 in every row
+	    </code>
+	  </pre>
+	</section>
+
+	<section>
+	  <h3>Merging DataFrames</h3>
+	  <p align="left">We can merge DataFrames on a common column with:</p>
+	  <pre><code data-trim data-noescape>
+ >>> DataFrame1.merge(DataFrame2, how='inner', on="common_column")  # inner join two dataframes on 'common_column'
+	    </code>
+	  </pre>
+	  <p align="left">There are many more options available when merging, however this (and how='outer') are commonly what we want.  <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.merge.html">See the full documentation here.</a>
+	</section>
+
+	<section>
+	  <h3>Calculating a Correlation Coefficient</h3>
+	  <p align="left">We can generate a correlation matrix for the variables in a DataFrame with:</p>
+	  <pre><code data-trim data-noescape>
+	      >>> DataFrame.corr()  # returns the matrix as a Pandas DataFrame
+	    </code>
+	  </pre>
+	</section>
+
+	<section>
+	  <h3>Exercise</h3>
+	  <p align="left"><a href="https://colab.research.google.com/drive/1KLqsQWbXHYSruQXBAJ1QamsxV9FLDN_R#scrollTo=MGMlIPWOo_W9">Question: Is higher levels of institutional ownership correlated with higher return on equity?</a></p>
+	</section>
+	
+	<!--- code section
+	  <pre><code data-trim data-noescape>
+	  </code></pre>
+	  -->
+
+</div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+  // More info about config & dependencies:
+  // - https://github.com/hakimel/reveal.js#configuration
+  // - https://github.com/hakimel/reveal.js#dependencies
+  Reveal.initialize({
+
+  transition: 'convex',
+  
+  <!-- menu: { -->
+  <!-- 	// Specifies which side of the presentation the menu will  -->
+  <!-- 	// be shown. Use 'left' or 'right'. -->
+  <!-- 	side: 'left', -->
+
+  <!-- 	// Add slide numbers to the titles in the slide list. -->
+  <!-- 	// Use 'true' or format string (same as reveal.js slide numbers) -->
+  <!-- 	numbers: false, -->
+
+  <!-- 	// Specifies which slide elements will be used for generating -->
+  <!-- 	// the slide titles in the menu. The default selects the first -->
+  <!-- 	// heading element found in the slide, but you can specify any -->
+  <!-- 	// valid css selector and the text from the first matching -->
+  <!-- 	// element will be used. -->
+  <!-- 	// Note: that a section data-menu-title attribute or an element -->
+  <!-- 	// with a menu-title class will take precedence over this option -->
+  <!-- 	titleSelector: 'h1, h2, h3, h4, h5, h6', -->
+
+  <!-- 	// If slides do not have a matching title, attempt to use the -->
+  <!-- 	// start of the text content as the title instead -->
+  <!-- 	useTextContentForMissingTitles: false, -->
+
+  <!-- 	// Hide slides from the menu that do not have a title. -->
+  <!-- 	// Set to 'true' to only list slides with titles. -->
+  <!-- 	hideMissingTitles: false, -->
+
+  <!-- 	// Add markers to the slide titles to indicate the  -->
+  <!-- 	// progress through the presentation -->
+  <!-- 	markers: false, -->
+
+  <!-- 	// Specify custom panels to be included in the menu, by -->
+  <!-- 	// providing an array of objects with 'title', 'icon' -->
+  <!-- 	// properties, and either a 'src' or 'content' property. -->
+  <!-- 	custom: false, -->
+
+  <!-- 	// Specifies the themes that will be available in the themes -->
+  <!-- 	// menu panel. Set to 'false' to hide themes panel. -->
+  <!-- 	themes: [ -->
+  <!-- 		{ name: 'Black', theme: 'css/theme/black.css' }, -->
+  <!-- 		{ name: 'White', theme: 'css/theme/white.css' }, -->
+  <!-- 		{ name: 'League', theme: 'css/theme/league.css' }, -->
+  <!-- 		{ name: 'Sky', theme: 'css/theme/sky.css' }, -->
+  <!-- 		{ name: 'Beige', theme: 'css/theme/beige.css' }, -->
+  <!-- 		{ name: 'Simple', theme: 'css/theme/simple.css' }, -->
+  <!-- 		{ name: 'Serif', theme: 'css/theme/serif.css' }, -->
+  <!-- 		{ name: 'Blood', theme: 'css/theme/blood.css' }, -->
+  <!-- 		{ name: 'Night', theme: 'css/theme/night.css' }, -->
+  <!-- 		{ name: 'Moon', theme: 'css/theme/moon.css' }, -->
+  <!-- 		{ name: 'Solarized', theme: 'css/theme/solarized.css' } -->
+  <!-- 	], -->
+
+  <!-- 	// Specifies if the transitions menu panel will be shown. -->
+  <!-- 	transitions: true, -->
+
+  <!-- 	// Adds a menu button to the slides to open the menu panel. -->
+  <!-- 	// Set to 'false' to hide the button. -->
+  <!-- 	openButton: true, -->
+
+  <!-- 	// If 'true' allows the slide number in the presentation to -->
+  <!-- 	// open the menu panel. The reveal.js slideNumber option must  -->
+  <!-- 	// be displayed for this to take effect -->
+  <!-- 	openSlideNumber: false, -->
+
+  <!-- 	// If true allows the user to open and navigate the menu using -->
+  <!-- 	// the keyboard. Standard keyboard interaction with reveal -->
+  <!-- 	// will be disabled while the menu is open. -->
+  <!-- 	keyboard: true, -->
+
+  <!-- 	// Normally the menu will close on user actions such as -->
+  <!-- 	// selecting a menu item, or clicking the presentation area. -->
+  <!-- 	// If 'true', the sticky option will leave the menu open -->
+  <!-- 	// until it is explicitly closed, that is, using the close -->
+  <!-- 	// button or pressing the ESC or m key (when the keyboard  -->
+  <!-- 	// interaction option is enabled). -->
+  <!-- 	sticky: false, -->
+
+  <!-- 	// If 'true' standard menu items will be automatically opened -->
+  <!-- 	// when navigating using the keyboard. Note: this only takes  -->
+  <!-- 	// effect when both the 'keyboard' and 'sticky' options are enabled. -->
+  <!-- 	autoOpen: true, -->
+
+  <!-- 	// If 'true' the menu will not be created until it is explicitly -->
+  <!-- 	// requested by calling RevealMenu.init(). Note this will delay -->
+  <!-- 	// the creation of all menu panels, including custom panels, and -->
+  <!-- 	// the menu button. -->
+  <!-- 	delayInit: false, -->
+
+  <!-- 	// By default the menu will load it's own font-awesome library -->
+  <!-- 	// icons. If your presentation needs to load a different -->
+  <!-- 	// font-awesome library the 'loadIcons' option can be set to false -->
+  <!-- 	// and the menu will not attempt to load the font-awesome library. -->
+  <!-- 	loadIcons: true -->
+  <!-- }, -->
+
+  <!-- uncomment the below section, and the two lines in the dependencies below, to turn on audio -->
+  <!-- audio: { -->
+  <!-- prefix: 'audio/', 	// audio files are stored in the "audio" folder -->
+  <!-- suffix: '.wav',		// audio files have the ".ogg" ending --- changed to wav -->
+  <!-- textToSpeechURL: null,  // the URL to the text to speech converter -->
+  <!-- defaultNotes: false, 	// use slide notes as default for the text to speech converter -->
+  <!-- defaultText: false, 	// use slide text as default for the text to speech converter -->
+  <!-- advance: 0, 		// advance to next slide after given time in milliseconds after audio has played, use negative value to not advance  -->
+  <!-- autoplay: false,	// automatically start slideshow -->
+  <!-- defaultDuration: 5,	// default duration in seconds if no audio is available  -->
+  <!-- playerOpacity: 0.05,	// opacity value of audio player if unfocused -->
+  <!-- playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls  -->
+  <!-- startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide -->
+  <!-- }, -->
+<!-- end audio section -->
+
+  
+  chalkboard: { 
+  src: null,
+  readOnly: undefined, 
+  toggleChalkboardButton: { left: "90px", bottom: "30px", top: "auto", right: "auto" },
+  toggleNotesButton: { left: "150px", bottom: "30px", top: "auto", right: "auto" },
+  },
+    math: {
+		mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+		config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+	},
+  dependencies: [
+  { src: 'plugin/math/math.js', async: true },
+  <!--   { src: 'plugin/audio-slideshow/slideshow-recorder.js', condition: function( ) { return !!document.body.classList; } },				 -->
+  <!-- { src: 'plugin/audio-slideshow/audio-slideshow.js', condition: function( ) { return !!document.body.classList; } }, -->
+  { src: 'plugin/markdown/marked.js' },
+  { src: 'plugin/markdown/markdown.js' },
+  { src: 'plugin/menu/menu.js' },
+  { src: 'plugin/notes/notes.js', async: true },
+  <!-- { src: 'node_modules/reveal.js-menu/menu.js' }, -->
+  { src: 'plugin/chalkboard/chalkboard.js' },
+  { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+  ],
+  keyboard: {
+  67: function() { RevealChalkboard.toggleNotesCanvas() },	// toggle notes canvas when 'c' is pressed
+  66: function() { RevealChalkboard.toggleChalkboard() },	// toggle chalkboard when 'b' is pressed
+  46: function() { RevealChalkboard.clear() },	// clear chalkboard when 'DEL' is pressed
+  8: function() { RevealChalkboard.reset() },	// reset chalkboard data on current slide when 'BACKSPACE' is pressed
+  68: function() { RevealChalkboard.download() },	// downlad recorded chalkboard drawing when 'd' is pressed
+  82: function() { Recorder.toggleRecording(); },	// press 'r' to start/stop recording
+  90: function() { Recorder.downloadZip(); }, 	// press 'z' to download zip containing audio files
+  84: function() { Recorder.fetchTTS(); }, 	// press 't' to fetch TTS audio files
+  },
+  });
+</script>
+</body>
+</html>
